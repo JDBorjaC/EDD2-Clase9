@@ -15,6 +15,7 @@ public class AVL {
      */
     public static void main(String[] args) {
         Tree tree = new Tree();
+        tree.addRecursive( 20);
         tree.addRecursive( 30);
         tree.addRecursive( 40);
         tree.addRecursive( 35);

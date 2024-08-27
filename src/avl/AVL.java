@@ -28,6 +28,9 @@ public class AVL {
         
         tree.imprimir(tree.root, 1);
         
+        System.out.println("\n----------------------------------------------------\n");
+        tree.imprimirArbol();
+        
         
     }
     

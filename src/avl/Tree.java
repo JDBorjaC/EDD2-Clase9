@@ -14,15 +14,15 @@ public class Tree {
         this.root = null;
     }
 
-    public static int alturaArbol(Node n1) {
+    public static int altura(Node n1) {
         if (n1 == null) {
             return 0;
         }
-        return Math.max(alturaArbol(n1.left), alturaArbol(n1.right)) + 1;
+        return Math.max(altura(n1.left), altura(n1.right)) + 1;
     }
 
     public void imprimirArbol() {  // Método para iniciar la impresión del árbol
-        int maxLevel = alturaArbol(this.root);  // Calcula la altura del árbol
+        int maxLevel = altura(this.root);  // Calcula la altura del árbol
         imprimirNodos(Collections.singletonList(this.root), 1, maxLevel);  // Llama al método de impresión empezando por la raíz
     }
 
@@ -98,18 +98,11 @@ public class Tree {
         imprimirNodos(nuevosNodos, nivel + 1, maxLevel);  // Llama recursivamente para imprimir el siguiente nivel de nodos
     }
 
-    public int alturaNodo(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return node.FE;
-    }
-
     public int factorEquilibrio(Node node) {
         if (node == null) {
             return 0;
         }
-        return alturaNodo(node.left) - alturaNodo(node.right);
+        return altura(node.left) - altura(node.right);
     }
 
     public Node rotacionDerecha(Node y) {
@@ -117,8 +110,8 @@ public class Tree {
         Node temp = x.right;
         x.right = y;
         y.left = temp;
-        y.FE = Math.max(alturaNodo(y.left), alturaNodo(y.right));
-        x.FE = Math.max(alturaNodo(x.left), alturaNodo(x.right));
+        x.FE = factorEquilibrio(x);
+        y.FE = factorEquilibrio(y);
         return x;
     }
 
@@ -127,8 +120,8 @@ public class Tree {
         Node temp = y.left;
         y.left = x;
         x.right = temp;
-        x.FE = Math.max(alturaNodo(x.left), alturaNodo(x.right));
-        y.FE = Math.max(alturaNodo(y.left), alturaNodo(y.right));
+        x.FE = factorEquilibrio(x);
+        y.FE = factorEquilibrio(y);
         return y;
     }
 
@@ -144,16 +137,18 @@ public class Tree {
             return node;
         }
 
-        node.FE = 1 + Math.max(alturaNodo(node.left), alturaNodo(node.right));
-        int balance = factorEquilibrio(node);
+        int FE = factorEquilibrio(node);
+        node.FE = FE;
+        
         int vNodoDer = node.right != null ? node.right.data : 0;
         int vNodoIzq = node.left != null ? node.left.data : 0;
-        if (balance > 1 && i > vNodoDer) {
-            System.out.println("Vamos a hacer una rotacion a la derecha");
+        
+        if (FE > 1 && i < vNodoIzq) {
+            //System.out.println("Vamos a hacer una rotacion a la derecha");
             return rotacionDerecha(node);
         }
-        if (balance < -1 && i < vNodoIzq) {
-            System.out.println("Vamos a hacer una rotacion a la izquierda");
+        if (FE < -1 && i > vNodoDer) {
+            //System.out.println("Vamos a hacer una rotacion a la izquierda");
             return rotacionIzquierda(node);
         }
         
